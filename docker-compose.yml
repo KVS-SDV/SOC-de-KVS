@@ -46,8 +46,8 @@ services:
     container_name: misp
     restart: always
     ports:
-      - "443:443/tcp"
-      - "80:80/tcp"
+      - "50443:443/tcp"
+      - "50080:80/tcp"
     volumes:
       - ./misp-data:/var/www/MISP/app/files
       - ./misp-db:/var/lib/mysql
@@ -59,7 +59,7 @@ services:
     container_name: shuffle
     restart: always
     ports:
-      - "8000:8000/tcp"
+      - "8484:8000/tcp"
     volumes:
       - ./shuffle-data:/var/ossec/shuffle/data
       - ./shuffle-logs:/var/ossec/shuffle/logs
