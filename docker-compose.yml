@@ -1,0 +1,71 @@
+version: '3'
+services:
+  wazuh:
+    build: wazuh-manager
+    container_name: wazuh
+    hostname: wazuh
+    restart: always
+    ports:
+      - "514:514/udp"
+      - "1514:1514/udp"
+      - "55000:55000/tcp"
+      - "55001:55001/tcp"
+      - "55002:55002/tcp"
+      - "55003:55003/tcp"
+    volumes:
+      - ./wazuh-data:/var/ossec/data
+      - ./wazuh-logs:/var/ossec/logs
+    networks:
+      - wazuh-net
+
+  thehive:
+    image: thehiveproject/thehive4
+    container_name: thehive
+    restart: always
+    ports:
+      - "9000:9000/tcp"
+    volumes:
+      - ./thehive-data:/opt/thehive/data
+    networks:
+      - wazuh-net
+
+  cortex:
+    image: thehiveproject/cortex
+    container_name: cortex
+    restart: always
+    ports:
+      - "9001:9001/tcp"
+      - "5001:5001/tcp"
+    volumes:
+      - ./cortex-data:/opt/cortex/data
+    networks:
+      - wazuh-net
+
+  misp:
+    image: misp/misp
+    container_name: misp
+    restart: always
+    ports:
+      - "443:443/tcp"
+      - "80:80/tcp"
+    volumes:
+      - ./misp-data:/var/www/MISP/app/files
+      - ./misp-db:/var/lib/mysql
+    networks:
+      - wazuh-net
+
+  shuffle:
+    image: wazuh/shuffle
+    container_name: shuffle
+    restart: always
+    ports:
+      - "8000:8000/tcp"
+    volumes:
+      - ./shuffle-data:/var/ossec/shuffle/data
+      - ./shuffle-logs:/var/ossec/shuffle/logs
+    networks:
+      - wazuh-net
+
+networks:
+  wazuh-net:
+    driver: bridge
