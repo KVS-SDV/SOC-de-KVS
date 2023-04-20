@@ -9,6 +9,7 @@ def display_menu():
     print("4. Analyse de la mémoire avec Volatility")
     print("5. Quitter")
 
+
 # Fonction pour exécuter la commande 'pslist' de Volatility
 def list_processes():
     os.system("volatility pslist")
