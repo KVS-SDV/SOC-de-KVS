@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  thehive:
+    image: thehiveproject/thehive4
+    environment:
+      - "ELASTICSEARCH_HOSTS=http://<elasticsearch_host>:9200"
+      - "ELASTICSEARCH_USERNAME=<elasticsearch_username>"
+      - "ELASTICSEARCH_PASSWORD=<elasticsearch_password>"
+    ports:
+      - "9000:9000"
+    volumes:
+      - thehive_data:/app/data
+      - thehive_logs:/app/logs
+
+  cortex:
+    image: thehiveproject/cortex
+    environment:
+      - "ELASTICSEARCH_HOSTS=http://<elasticsearch_host>:9200"
+      - "ELASTICSEARCH_USERNAME=<elasticsearch_username>"
+      - "ELASTICSEARCH_PASSWORD=<elasticsearch_password>"
+    ports:
+      - "9001:9001"
+    volumes:
+      - cortex_data:/data
+      - cortex_logs:/var/log/cortex
+
+volumes:
+  thehive_data:
+  thehive_logs:
+  cortex_data:
+  cortex_logs:
