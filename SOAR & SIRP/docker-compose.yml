@@ -67,7 +67,7 @@ services:
     volumes:
       - ./elasticsearch-data:/usr/share/elasticsearch/data
     ports:
-      - 9200:9200
+      - 9300:9200
     networks:
       - thehive
 
@@ -78,7 +78,7 @@ services:
       - ./thehive/logs:/opt/thehive/logs
     environment:
       - PLAY_APP_SECRET=your_secret_key_here
-      - HIVE_ES_NODES=http://elasticsearch:9200
+      - HIVE_ES_NODES=http://elasticsearch:9300
       - HIVE_CORTEX_URL=http://cortex:9001
       - HIVE_CORTEX_PING_URL=http://cortex:9001/ping
     ports:
