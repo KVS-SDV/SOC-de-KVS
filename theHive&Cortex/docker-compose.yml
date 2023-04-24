@@ -1,32 +1,82 @@
-version: "3"
-
+version: "3.8"
 services:
-  thehive:
-    image: thehiveproject/thehive4
-    environment:
-      - "ELASTICSEARCH_HOSTS=http://<elasticsearch_host>:9200"
-      - "ELASTICSEARCH_USERNAME=<elasticsearch_username>"
-      - "ELASTICSEARCH_PASSWORD=<elasticsearch_password>"
+  elasticsearch:
+    image: 'docker.elastic.co/elasticsearch/elasticsearch:7.11.1'
+    container_name: elasticsearch
+    restart: unless-stopped
     ports:
-      - "9000:9000"
+      - '0.0.0.0:9200:9200'
+    environment:
+      - http.host=0.0.0.0
+      - discovery.type=single-node
+      - cluster.name=hive
+      - script.allowed_types= inline
+      - thread_pool.search.queue_size=100000
+      - thread_pool.write.queue_size=10000
+      - gateway.recover_after_nodes=1
+      - xpack.security.enabled=false
+      - bootstrap.memory_lock=true
+      - 'ES_JAVA_OPTS=-Xms256m -Xmx256m'
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     volumes:
-      - thehive_data:/app/data
-      - thehive_logs:/app/logs
+      - ./vol/elasticsearch_data:/usr/share/elasticsearch/data
+      - ./vol/elasticsearch_logs:/usr/share/elasticsearch/logs
+
+  kibana:
+    image: 'docker.elastic.co/kibana/kibana:7.11.1'
+    container_name: kibana
+    restart: unless-stopped
+    depends_on:
+      - elasticsearch
+    ports:
+      - '5601:5601'
 
   cortex:
-    image: thehiveproject/cortex
-    environment:
-      - "ELASTICSEARCH_HOSTS=http://<elasticsearch_host>:9200"
-      - "ELASTICSEARCH_USERNAME=<elasticsearch_username>"
-      - "ELASTICSEARCH_PASSWORD=<elasticsearch_password>"
-    ports:
-      - "9001:9001"
+    image: 'thehiveproject/cortex:latest'
+    container_name: cortex
+    restart: unless-stopped
     volumes:
-      - cortex_data:/data
-      - cortex_logs:/var/log/cortex
+      - ./cortex/application.conf:/etc/cortex/application.conf
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp:/tmp
+    environment:
+      - http_proxy=${http_proxy}
+      - https_proxy=${https_proxy}
+    depends_on:
+      - elasticsearch
+    ports:
+      - '0.0.0.0:9001:9001'
 
-volumes:
-  thehive_data:
-  thehive_logs:
-  cortex_data:
-  cortex_logs:
+  cassandra:
+    image: cassandra:3.11
+    container_name: cassandra
+    restart: unless-stopped
+    hostname: cassandra
+    environment:
+      - MAX_HEAP_SIZE=1G
+      - HEAP_NEWSIZE=1G
+      - CASSANDRA_CLUSTER_NAME=thp
+    volumes:
+      - ./vol/cassandra-data:/var/lib/cassandra/data
+
+  thehive:
+    image: 'thehiveproject/thehive4:latest'
+    container_name: thehive
+    restart: unless-stopped
+    depends_on:
+      - cassandra
+    ports:
+      - '0.0.0.0:9000:9000'
+    volumes:
+      - ./thehive/application.conf:/etc/thehive/application.conf
+      - ./vol/data:/opt/data
+      - ./vol/index:/opt/index
+    command: '--no-config --no-config-secret'
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: unless-stopped
