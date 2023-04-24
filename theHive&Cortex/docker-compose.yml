@@ -75,8 +75,3 @@ services:
       - ./vol/data:/opt/data
       - ./vol/index:/opt/index
     command: '--no-config --no-config-secret'
-
-  redis:
-    image: redis:latest
-    container_name: redis
-    restart: unless-stopped
