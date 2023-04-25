@@ -26,7 +26,7 @@ Le projet est organisé en plusieurs phases, chacune correspondant à une étape
 
 Le projet est supervisé par le professeur du cours, qui fournit des conseils et des feedbacks réguliers pour aider les étudiants à progresser et à atteindre les objectifs fixés.
 
-Comment utiliser le projet
+Comment utiliser le projet? 
 Ce projet est destiné à être utilisé uniquement à des fins éducatives et de démonstration. Il n'est pas destiné à être utilisé en production ou pour assurer la sécurité d'un système réel.
 
 Les étudiants peuvent utiliser ce projet comme un exemple de mise en place d'un SOC, en comprenant les différentes étapes et les outils utilisés pour assurer la sécurité des systèmes et des données d'une entreprise.
