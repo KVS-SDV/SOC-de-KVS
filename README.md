@@ -30,3 +30,10 @@ Comment utiliser le projet
 Ce projet est destiné à être utilisé uniquement à des fins éducatives et de démonstration. Il n'est pas destiné à être utilisé en production ou pour assurer la sécurité d'un système réel.
 
 Les étudiants peuvent utiliser ce projet comme un exemple de mise en place d'un SOC, en comprenant les différentes étapes et les outils utilisés pour assurer la sécurité des systèmes et des données d'une entreprise.
+
+Contributeurs
+Le projet a été réalisé par les étudiants suivants :
+Kavirajan SARAVANANE
+
+Sous la supervision de :
+Nathan BRAMLI
