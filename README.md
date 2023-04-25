@@ -33,7 +33,7 @@ Les étudiants peuvent utiliser ce projet comme un exemple de mise en place d'un
 
 Contributeurs
 Le projet a été réalisé par les étudiants suivants :
-Kavirajan SARAVANANE
+KVS
 
 Sous la supervision de :
 Nathan BRAMLI
