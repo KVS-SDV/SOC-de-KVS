@@ -36,4 +36,4 @@ Le projet a été réalisé par les étudiants suivants :
 KVS
 
 Sous la supervision de :
-Nathan BRAMLI
+Professeurs de SDV
